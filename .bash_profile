@@ -1,4 +1,4 @@
-eval "$(pyenv virtualenv-init -)"
+#eval "$(pyenv virtualenv-init -)"
 #eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 
 export NVM_DIR="$HOME/.nvm"
