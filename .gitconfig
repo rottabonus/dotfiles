@@ -1,1 +1,5 @@
-/home/felix/.gitconfig
+[user]
+	name = Felix Hallenberg
+	email = feqwin@gmail.com
+[pull]
+	rebase = true
