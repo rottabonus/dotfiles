@@ -128,6 +128,12 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 # 3.4.2021
 export PATH=$PATH:$HOME/bin
 
+#add flipper to path
+# 11.5.2021
+export PATH=$PATH:$HOME/bin/flipper
+#Add rn debugger to path
+# 12.5.2021
+export PATH=$PATH:$HOME/bin/rndebugger
 #homebrew
 #uncommented these 20.3.2021
 #test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
@@ -144,3 +150,4 @@ export NVM_DIR="$HOME/.nvm"
 #felix 20.3.2021
 export PATH=$PATH:$HOME/.local/bin
 
+. "$HOME/.cargo/env"
