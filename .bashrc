@@ -56,8 +56,20 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+#bash commandline coloring
+# 18.5.2021
+# Bash commandline coloring
+RED="\[\033[0;31m\]"
+YELLOW="\[\033[0;33m\]"
+DARKGREEN="\[\033[0;32m\]"
+GREEN="\[\033[1;32m\]"
+NO_COLOR="\[\033[0m\]"
+LIGHT_CYAN="\[\e[96m\]"
+LIGHT_MAGENTA="\[\e[35m\]"
+
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+   PS1='${debian_chroot:+($debian_chroot)}\[\033[01;33m\]\u@\h\[\033[00m\]:\[\033[01;96m\]\w\[\033[00m\]\$ '
+   #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
@@ -123,7 +135,6 @@ export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
-
 #neovim appimage to path
 # 3.4.2021
 export PATH=$PATH:$HOME/bin
@@ -131,16 +142,10 @@ export PATH=$PATH:$HOME/bin
 #add flipper to path
 # 11.5.2021
 export PATH=$PATH:$HOME/bin/flipper
+
 #Add rn debugger to path
 # 12.5.2021
 export PATH=$PATH:$HOME/bin/rndebugger
-#homebrew
-#uncommented these 20.3.2021
-#test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
-#test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-#uncommented these 18.3.2021
-#test -r ~/.bash_profile && echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.bash_profile
-#echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -151,3 +156,4 @@ export NVM_DIR="$HOME/.nvm"
 export PATH=$PATH:$HOME/.local/bin
 
 . "$HOME/.cargo/env"
+
