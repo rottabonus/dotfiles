@@ -25,8 +25,8 @@ ln -s ${dotfilesDir}/${1} ${dest}
 
 
 echo "current working directory ${dotfilesDir}"
-linkFile .bashrc
-linkFile .bash_profile
+#linkFile .bashrc
+#linkFile .bash_profile
 linkFile .gitconfig
 linkFile .tmux.conf
 linkFile .vimrc
