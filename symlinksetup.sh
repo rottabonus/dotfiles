@@ -9,18 +9,19 @@ dest="${HOME}/${1}"
 date=$(date +%Y-%m-%d-%H%M)
 
 if [ -L ~/${1} ]; then
-   #symlink exists
-   echo "Symlink exists"
-   rm {dest}
+	#symlink exists
+	echo "Symlink exists"
+	rm {dest}
 
 elif [ -f "${dest}" ]; then
-   #file exist
-   echo "File exist, backup"
-   mv ${dest} "${dest}_backup_${date}"
+	#file exist
+	echo "File exist, backup"
+	mv ${dest} "${dest}_backup_${date}"
 fi
 
 echo "Creating new symlink for ${1}"
 ln -s ${dotfilesDir}/${1} ${dest}
+
 }
 
 
@@ -30,3 +31,4 @@ echo "current working directory ${dotfilesDir}"
 linkFile .gitconfig
 linkFile .tmux.conf
 linkFile .vimrc
+linkFile nvim
