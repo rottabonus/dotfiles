@@ -38,3 +38,10 @@ require('keymap')
 
 install_plugin_manager()
 require('lazy').setup(read_plugin_defs(), {})
+
+vim.cmd("set invnumber")
+vim.cmd("set invrelativenumber")
+vim.cmd("set shiftwidth=2")
+vim.cmd("set tabstop=2")
+vim.cmd("set expandtab")
+vim.cmd("colo gruvbox")
