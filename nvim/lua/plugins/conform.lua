@@ -11,9 +11,10 @@ return {
       -- Use a sub-list to run only the first available formatter
       typescript = { { "prettierd", "prettier" } },
       typescriptreact = {
-        { "eslintd", "eslint" },
+        { "eslintd",   "eslint" },
         { "prettierd", "prettier" },
       },
+      json = { "fixjson", "prettier" }
     },
     format_on_save = {
       -- These options will be passed to conform.format()
