@@ -6,8 +6,8 @@ return {
     formatters_by_ft = {
       lua = { "stylua" },
       python = { "isort", "black" },
-      typescript = { "prettierd", "prettier" },
-      typescriptreact = { "eslintd", "eslint", "prettierd", "prettier" },
+      typescript = { "biome", "prettierd", "prettier" },
+      typescriptreact = { "biome", "eslintd", "eslint", "prettierd", "prettier" },
       json = { "fixjson", "prettier" },
     },
     format_on_save = {
