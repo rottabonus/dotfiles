@@ -5,19 +5,20 @@ local config = function()
       vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
     end
 
-    nmap("<leader>r", vim.lsp.buf.rename, "[R]e[n]ame")
-    nmap("<leader>a", vim.lsp.buf.code_action, "[C]ode [A]ction")
+    -- LSP keymaps
     nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
+    nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
     nmap("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
     nmap("gi", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
+    nmap("K", vim.lsp.buf.hover, "Hover Documentation")
+    nmap("<leader>r", vim.lsp.buf.rename, "[R]e[n]ame")
+    nmap("<leader>a", vim.lsp.buf.code_action, "[C]ode [A]ction")
     nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
     nmap("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
     nmap("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
-    nmap("K", vim.lsp.buf.hover, "Hover Documentation")
-    nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
     if client.supports_method("textDocument/formatting") then
-      vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
+      vim.api.nvim_buf_create_user_command(bufnr, "Format", function()
         vim.lsp.buf.format({ async = true })
       end, { desc = "Format current buffer with LSP" })
     end
@@ -28,47 +29,60 @@ local config = function()
   local mason_lspconfig = require("mason-lspconfig")
   local lspconfig_util = require("lspconfig.util")
 
-  local servers = {}
-
-  local installed_servers = vim.tbl_keys(servers)
-  table.insert(installed_servers, "lua_ls")
+  -- Servers with custom settings
+  local servers = {
+    lua_ls = {}, -- Lua custom settings handled in handler
+    vtsls = {},  -- TS/JS server
+  }
 
   mason_lspconfig.setup({
-    ensure_installed = installed_servers,
+    ensure_installed = vim.tbl_keys(servers),
     handlers = {
       ["lua_ls"] = function()
+        local ok, neodev = pcall(require, "neodev")
+        if ok then neodev.setup() end
+
         local opts = {
           on_attach = on_attach,
           capabilities = capabilities,
+          root_dir = lspconfig_util.root_pattern(".git"),
           settings = {
             Lua = {
+              runtime = { version = "LuaJIT" },
               workspace = {
                 checkThirdParty = false,
-                library = require("neodev").library(),
+                library = ok and neodev.library() or {},
               },
               telemetry = { enable = false },
-              runtime = {
-                version = "LuaJIT",
-              },
             },
           },
-          root_dir = lspconfig_util.root_pattern(".git"),
         }
-        lspconfig["lua_ls"].setup(opts)
+
+        lspconfig.lua_ls.setup(opts)
       end,
 
       ["*"] = function(server_name)
-        local opts = servers[server_name] or {}
-
-        local merged_opts = vim.tbl_deep_extend("force", {
+        lspconfig[server_name].setup({
           on_attach = on_attach,
           capabilities = capabilities,
-          root_dir = lspconfig_util.root_pattern(".git"),
-        }, opts)
-
-        lspconfig[server_name].setup(merged_opts)
+          root_dir = lspconfig_util.root_pattern(".git", "tsconfig.json", "package.json"),
+        })
       end,
     },
+  })
+
+  -- Attach on_attach to any already running clients (like biome)
+  vim.api.nvim_create_autocmd("BufEnter", {
+    callback = function(args)
+      local bufnr = args.buf
+      for _, client in pairs(vim.lsp.get_active_clients({ bufnr = bufnr })) do
+        -- only attach if not already attached
+        local exists = vim.fn.mapcheck("gd", "n", bufnr)
+        if exists == "" then
+          on_attach(client, bufnr)
+        end
+      end
+    end,
   })
 end
 
