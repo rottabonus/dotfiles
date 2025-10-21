@@ -75,7 +75,7 @@ local config = function()
   vim.api.nvim_create_autocmd("BufEnter", {
     callback = function(args)
       local bufnr = args.buf
-      for _, client in pairs(vim.lsp.get_active_clients({ bufnr = bufnr })) do
+      for _, client in pairs(vim.lsp.get_clients({ bufnr = bufnr })) do
         -- only attach if not already attached
         local exists = vim.fn.mapcheck("gd", "n", bufnr)
         if exists == "" then
